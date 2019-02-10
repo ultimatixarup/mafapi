@@ -1,0 +1,156 @@
+openapi: "3.0.1"
+info:
+  title: "mafMock"
+  version: "1.0.0"
+servers:
+# Added by API Auto Mocking Plugin
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/ultimatixarup/mafmockapi/1.0.0
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/ultimatixarup/querybyphone/1.0.0
+- url: "https://n5peqa4y3f.execute-api.us-east-1.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "/prod"
+paths:
+  /profile:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/MAFIDInput'
+      responses:
+        200:
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryByMAFIDResponse"
+  /phone:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/PhoneInput'
+      responses:
+        200:
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryByPhoneResponse"
+components:
+  requestBodies:
+    PhoneInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PhoneInput'
+    MAFIDInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MAFIDInput'        
+  schemas:
+    PhoneInput:
+        type: object
+        title: Input phone
+        properties:
+          phone:
+            type: string
+            title: Input 911 source phone number
+    MAFIDInput:
+        type: object
+        title: Input mafid
+        properties:
+          mafid:
+            type: string
+            title: Input MAF ID of caller        
+    QueryByPhoneResponse:
+      type: object
+      title: QueryByPhoneReponse
+      required:
+      - statusCode
+      - response
+      properties:
+        statusCode:
+          type: integer
+          title: The Statuscode Schema
+          example: 200
+        response:
+          type: array
+          title: The Response Schema
+          items:
+            type: object
+            title: The Items Schema
+            properties:
+              age:
+                type: integer
+                title: The Age Schema
+                example: 35
+              gender:
+                type: string
+                title: The Gender Schema
+                example: 'Male'
+              MAFID:
+                type: string
+                title: The Mafid Schema
+                example: 'US7353J97WR'
+    QueryByMAFIDResponse:
+      type: object
+      properties:
+        MAFID:
+          type: string
+          title: The Mafid Schema
+          example: 'US7353J97WR'
+        FirstName:
+          type: string
+          title: The Firstname Schema
+          example: 'JOHN'
+        LastName:
+          type: string
+          title: The Lastname Schema
+          example: 'DO'
+        Gender:
+          type: string
+          title: The Gender Schema
+          example: 'Male'
+        DOB:
+          type: integer
+          title: The Dob Schema
+          example: 189324000
+        LastUpdateContactDate:
+          type: integer
+          title: The Lastupdatecontactdate Schema
+          example: 1514786400
+        age:
+          type: integer
+          title: The Age Schema
+          example: 42
+        Phone:
+          type: array
+          title: The Phone Schema
+          items:
+            type: object
+            title: The Items Schema
+            properties:
+              type:
+                type: string
+                title: The Type Schema
+                example: 'Home Phone'
+              number:
+                type: string
+                title: The Number Schema
+                example: '(515) 425-8037'
+        Engraving:
+          type: array
+          title: The Engraving Schema
+          items:
+            type: object
+            title: The Items Schema
+            properties:
+              RecentEngravingDate:
+                type: integer
+                title: The Recentengravingdate Schema
+                example: 189324000
+              Engraving:
+                type: string
+                title: The Engraving Schema
+                example: 'AUTISM      US7353J97WR'
