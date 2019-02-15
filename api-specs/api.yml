@@ -3,19 +3,32 @@ info:
   title: "mafMock"
   version: "1.0.0"
 servers:
+
 # Added by API Auto Mocking Plugin
-# Added by API Auto Mocking Plugin
-- description: SwaggerHub API Auto Mocking
-  url: https://virtserver.swaggerhub.com/ultimatixarup/mafmockapi/1.0.0
-- description: SwaggerHub API Auto Mocking
-  url: https://virtserver.swaggerhub.com/ultimatixarup/querybyphone/1.0.0
-- url: "https://n5peqa4y3f.execute-api.us-east-1.amazonaws.com/{basePath}"
+
+- url: " https://c5c7gwmo32.execute-api.us-west-1.amazonaws.com/{basePath}"
   variables:
     basePath:
-      default: "/prod"
+      default: "dev"
+
 paths:
+  /register:
+    post:
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/RegistrationInput'
+      responses:
+        200:
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
   /profile:
     post:
+      security:
+        - ApiAuth: []
       requestBody:
         $ref: '#/components/requestBodies/MAFIDInput'
       responses:
@@ -27,6 +40,8 @@ paths:
                 $ref: "#/components/schemas/QueryByMAFIDResponse"
   /phone:
     post:
+      security:
+        - ApiAuth: []
       requestBody:
         $ref: '#/components/requestBodies/PhoneInput'
       responses:
@@ -37,7 +52,22 @@ paths:
               schema:
                 $ref: "#/components/schemas/QueryByPhoneResponse"
 components:
+  securitySchemes:
+    ApiKeyAuth:       
+      type: apiKey
+      in: header 
+      name: x-api-key
+    ApiAuth:       
+      type: apiKey
+      in: header 
+      name: Authorization
   requestBodies:
+    RegistrationInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegInput'
+            
     PhoneInput:
       content:
         application/json:
@@ -49,6 +79,14 @@ components:
           schema:
             $ref: '#/components/schemas/MAFIDInput'        
   schemas:
+    RegInput:
+        type: object
+        title: Input registration
+        properties:
+          clientid: 
+            type: string
+            description: provide client id
+    
     PhoneInput:
         type: object
         title: Input phone
@@ -62,37 +100,32 @@ components:
         properties:
           mafid:
             type: string
-            title: Input MAF ID of caller        
-    QueryByPhoneResponse:
+            title: Input MAF ID of caller 
+    TokenResponse:
       type: object
-      title: QueryByPhoneReponse
-      required:
-      - statusCode
-      - response
       properties:
-        statusCode:
+        token: 
+          type: string
+    QueryByPhoneResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/PhoneResponseElement' 
+      title: QueryByPhoneReponse
+    PhoneResponseElement:  
+      properties:
+        Age:
           type: integer
-          title: The Statuscode Schema
-          example: 200
-        response:
-          type: array
-          title: The Response Schema
-          items:
-            type: object
-            title: The Items Schema
-            properties:
-              age:
-                type: integer
-                title: The Age Schema
-                example: 35
-              gender:
-                type: string
-                title: The Gender Schema
-                example: 'Male'
-              MAFID:
-                type: string
-                title: The Mafid Schema
-                example: 'US7353J97WR'
+          title: The Age Schema
+          example: 35
+        Gender:
+          type: string
+          title: The Gender Schema
+          example: 'Male'
+        MAFID:
+          type: string
+          title: The Mafid Schema
+          example: 'US7353J97WR'
+  
     QueryByMAFIDResponse:
       type: object
       properties:
@@ -120,7 +153,7 @@ components:
           type: integer
           title: The Lastupdatecontactdate Schema
           example: 1514786400
-        age:
+        Age:
           type: integer
           title: The Age Schema
           example: 42
