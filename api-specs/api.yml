@@ -1,6 +1,6 @@
 openapi: "3.0.1"
 info:
-  title: "mafMock"
+  title: "maf_dev_api"
   version: "1.0.0"
 servers:
 
@@ -94,6 +94,7 @@ components:
           phone:
             type: string
             title: Input 911 source phone number
+            example: (203) 855-1485
     MAFIDInput:
         type: object
         title: Input mafid
@@ -101,6 +102,7 @@ components:
           mafid:
             type: string
             title: Input MAF ID of caller 
+            example: USF6YXH2496
     TokenResponse:
       type: object
       properties:
